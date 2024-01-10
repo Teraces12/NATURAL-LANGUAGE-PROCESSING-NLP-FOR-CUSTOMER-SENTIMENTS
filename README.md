@@ -2,19 +2,20 @@
 <p align="center">
   <img src="NLP1.png">
 </p>
-I) Introduction
+
+## I) INTRODUCTION
 In today's digital age, businesses are inundated with vast amounts of customer feedback across various online platforms. Understanding and interpreting this feedback is crucial for maintaining customer satisfaction and making informed business decisions. The NLP (Natural Language Processing) for Customer Sentiment Analysis project aims to leverage advanced language processing techniques to analyze and extract valuable insights from customer sentiments, reviews and predict if customers are happy or not.
 
 In brief we develop in this project NLP Models to analyze customer reviews on social media and identify customers sentiment.
 
 We are going to leverage TOKENIZATION (COUNT VECTORIZATION), Natural Language tool kit (nltk), NAIVE BAYES CLASSIFIER MODEL, LOGISTIC REGRESSION CLASSIFIER to performing tasks.
 
-II) NLP AND BUSINESS
+## II) NLP AND BUSINESS
 We define Natural Language Processing (NLP) as subfield of artificial intelligence that helps computers understand, interpret and manipulate human language. NLP draws from many disciplines, including computer science and computational linguistics, in its pursuit to fill the gap between human communication and computer understanding.
 
 Machines are very good at working with tabular data or spreadsheets. However, as human beings, we generally communicate with words and sentences, not in tabular form. Most of the information humans speak or write is unstructured. So it's not easy for computers to interpret it. In NLP (Natual Language Processing), the aim is to enable computers to understand unstructured texts and extract meaningful pieces of information from them.
 
-III) THE PROBLEM STATEMENT AND BUSINESS CASE
+## III) THE PROBLEM STATEMENT AND BUSINESS CASE
 NLP can be used to build predictive models to perform sentiment analysis on social media posts and reviews and predict if customers are happy or not.
 
 Natural language processors work by converting words into numbers and training a machine learning models to make predictions.
@@ -27,144 +28,67 @@ data source: https://www.kaggle.com/sid321axn/amazon-alexa-reviews/kernels
 
 We would like to thank the Kaggle team for their data.
 
-i) IMPORT LIBRARIES AND DATASETS
-[ ]
-  1
-  2
-  3
-  4
-  5
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-import tensorflow as tf
-[ ]
-  1
-  2
-from google.colab import drive
-drive.mount('/content/drive')
-account_circle
-Drive already mounted at /content/drive; to attempt to forcibly remount, call drive.mount("/content/drive", force_remount=True).
-[ ]
-  1
-reviews_df = pd.read_csv('/content/drive/My Drive/Colab Notebooks/amazon_alexa.tsv', sep='\t')
-[ ]
-  1
-reviews_df
-account_circle
+### i) IMPORT LIBRARIES AND DATASETS
+<p align="center">
+  <img src="IMPORT.png">
+</p>
+ 
+<p align="center">
+  <img src="Mount.png">
+</p>
 
-[ ]
-  1
-reviews_df.info()
-account_circle
-<class 'pandas.core.frame.DataFrame'>
-RangeIndex: 3150 entries, 0 to 3149
-Data columns (total 5 columns):
- #   Column            Non-Null Count  Dtype 
----  ------            --------------  ----- 
- 0   rating            3150 non-null   int64 
- 1   date              3150 non-null   object
- 2   variation         3150 non-null   object
- 3   verified_reviews  3150 non-null   object
- 4   feedback          3150 non-null   int64 
-dtypes: int64(2), object(3)
-memory usage: 123.2+ KB
-[ ]
-  1
-reviews_df.describe()
-account_circle
 
-[ ]
-  1
-reviews_df['verified_reviews']
-account_circle
-0                                           Love my Echo!
-1                                               Loved it!
-2       Sometimes while playing a game, you can answer...
-3       I have had a lot of fun with this thing. My 4 ...
-4                                                   Music
-                              ...                        
-3145    Perfect for kids, adults and everyone in betwe...
-3146    Listening to music, searching locations, check...
-3147    I do love these things, i have them running my...
-3148    Only complaint I have is that the sound qualit...
-3149                                                 Good
-Name: verified_reviews, Length: 3150, dtype: object
-ii) EXPLORE DATASET
-[ ]
-  1
- sns.heatmap(reviews_df.isnull(), yticklabels = False, cbar = False, cmap="Reds")
-account_circle
+#### reviews_df
+<p align="center">
+  <img src="NLP2.png">
+</p>
 
+#### reviews_df.describe()
+<p align="center">
+  <img src="NLP3.png">
+</p>
+### ii) EXPLORE DATASET
 [ ]
-  1
-reviews_df.hist(bins = 30, figsize = (13,5), color = 'b')
-account_circle
-
+  1 sns.heatmap(reviews_df.isnull(), yticklabels = False, cbar = False, cmap="Reds")
+<p align="center">
+  <img src="NLP8.png">
+</p>
+"reviews_df.hist(bins = 30, figsize = (13,5), color = 'b')"
+<p align="center">
+  <img src="NLp9.png">
+</p>
 Let's get the length of the messages
-
-[ ]
-  1
-  2
 reviews_df['length'] = reviews_df['verified_reviews'].apply(len)
 reviews_df.head()
-account_circle
-
-[ ]
-  1
+<p align="center">
+  <img src="NLP10.png">
+</p>
 reviews_df['length'].plot(bins=100, kind='hist', color = 'coral' )
-account_circle
-
-[ ]
-  1
+<p align="center">
+  <img src="NLP11.png">
+</p>
 reviews_df.length.describe()
-account_circle
-count    3150.000000
-mean      132.049524
-std       182.099952
-min         1.000000
-25%        30.000000
-50%        74.000000
-75%       165.000000
-max      2851.000000
-Name: length, dtype: float64
-Let's see the longest message 43952
 
-[ ]
-  1
+<p align="center">
+  <img src="NLP12.png">
+</p>
+
 reviews_df[reviews_df['length'] == 2851]['verified_reviews'].iloc[0]
-account_circle
+<p align="center">
+  <img src="nlpiloc.png">
+</p>
 
-Let's see the shortest message
-
-[ ]
-  1
-reviews_df[reviews_df['length'] == 1]['verified_reviews'].iloc[0]
-account_circle
-
-Let's see the message with mean length
-
-[ ]
-  1
-reviews_df[reviews_df['length'] == 133]['verified_reviews'].iloc[0]
-account_circle
-
-[ ]
-  1
-positive = reviews_df[reviews_df['feedback']==1]
-[ ]
-  1
 negative = reviews_df[reviews_df['feedback']==0]
-[ ]
-  1
-negative
-account_circle
 
-[ ]
-  1
+negative
+<p align="center">
+  <img src="NLP14.png">
+</p>
+
 positive
-account_circle
+<p align="center">
+  <img src="NLP15.png">
+</p>
 
 [ ]
   1
