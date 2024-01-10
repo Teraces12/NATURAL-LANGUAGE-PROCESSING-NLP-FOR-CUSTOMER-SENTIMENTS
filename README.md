@@ -234,17 +234,13 @@ account_circle
  'w']
 We join the characters again to form the string.
 
-[ ]
-  1
-  2
+
 Test_punc_removed_join = ''.join(Test_punc_removed)
 Test_punc_removed_join
 account_circle
 
 ## VI) REMOVE STOPWORDS
-[ ]
-  1
-  2
+
 import nltk # Natural Language tool kit
 nltk.download('stopwords')
 account_circle
@@ -253,12 +249,10 @@ account_circle
 True
 You have to download stopwords Package to execute this command
 
-[ ]
-  1
-  2
+
 from nltk.corpus import stopwords
 stopwords.words('english')
-account_circle
+
 ['i',
  'me',
  'my',
@@ -438,80 +432,55 @@ account_circle
  "won't",
  'wouldn',
  "wouldn't"]
-[ ]
-  1
-Test_punc_removed_join
-account_circle
 
-[ ]
-  1
+Test_punc_removed_join
+
+
+
 Test_punc_removed_join_clean = [word for word in Test_punc_removed_join.split() if word.lower() not in stopwords.words('english')]
-[ ]
-  1
+
 Test_punc_removed_join_clean # Only important (no so common) words are left
-account_circle
+
 ['Hello', 'Mr', 'Future', 'happy', 'learning', 'AI']
-[ ]
-  1
+
 mini_challenge = 'Here is a mini challenge, that will teach you how to remove stopwords and punctuations!'
-[ ]
-  1
-  2
-  3
+
 challege = [ char     for char in mini_challenge  if char not in string.punctuation ]
 challenge = ''.join(challege)
 challenge = [  word for word in challenge.split() if word.lower() not in stopwords.words('english')  ]
 ## VII) PERFORM COUNT VECTORIZATION (TOKENIZATION)
-[ ]
-  1
-  2
-  3
-  4
-  5
-  6
+
 from sklearn.feature_extraction.text import CountVectorizer
 sample_data = ['This is the first document.','This document is the second document.','And this is the third one.','Is this the first document?']
 
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(sample_data)
 
-[ ]
-  1
+
 print(vectorizer.get_feature_names_out())
-account_circle
+
 ['and' 'document' 'first' 'is' 'one' 'second' 'the' 'third' 'this']
-[ ]
-  1
+
 print(X.toarray())
 account_circle
 [[0 1 1 1 0 0 1 0 1]
  [0 2 0 1 0 1 1 0 1]
  [1 0 0 1 1 0 1 1 1]
  [0 1 1 1 0 0 1 0 1]]
-[ ]
-  1
-  2
-  3
-  4
-  5
+
 mini_challenge = ['Hello World','Hello Hello World','Hello World world world']
 
 vectorizer_challenge = CountVectorizer()
 X_challenge = vectorizer_challenge.fit_transform(mini_challenge)
 print(X_challenge.toarray())
-account_circle
+
 [[1 1]
  [2 1]
  [1 3]]
 ## VIII) PERFORM DATA CLEANING
 Let's define a pipeline to clean up all the messages. The pipeline performs the following: (1) remove punctuation, (2) remove stopwords
 
-[ ]
-  1
-  2
-  3
-  4
-  5
+
 def message_cleaning(message):
     Test_punc_removed = [char for char in message if char not in string.punctuation]
     Test_punc_removed_join = ''.join(Test_punc_removed)
@@ -519,23 +488,20 @@ def message_cleaning(message):
     return Test_punc_removed_join_clean
 Right now we are going to test the newly added function
 
-[ ]
-  1
+
 reviews_df_clean = reviews_df['verified_reviews'].apply(message_cleaning)
-[ ]
-  1
+
 print(reviews_df_clean[3]) # show the cleaned up version
-account_circle
+
 ['lot', 'fun', 'thing', '4', 'yr', 'old', 'learns', 'dinosaurs', 'control', 'lights', 'play', 'games', 'like', 'categories', 'nice', 'sound', 'playing', 'music', 'well']
-[ ]
-  1
+
 print(reviews_df['verified_reviews'][3]) # show the original version
-account_circle
+
 I have had a lot of fun with this thing. My 4 yr old learns about dinosaurs, i control the lights and play games like categories. Has nice sound when playing music as well.
-[ ]
-  1
+
+
 reviews_df_clean
-account_circle
+
 0                                            [Love, Echo]
 1                                                 [Loved]
 2       [Sometimes, playing, game, answer, question, c...
@@ -548,24 +514,19 @@ account_circle
 3148    [complaint, sound, quality, isnt, great, mostl...
 3149                                               [Good]
 Name: verified_reviews, Length: 3150, dtype: object
-[ ]
-  1
-  2
-  3
-  4
+
 from sklearn.feature_extraction.text import CountVectorizer
-# Define the cleaning pipeline we defined earlier
+### Define the cleaning pipeline we defined earlier
+
 vectorizer = CountVectorizer(analyzer = message_cleaning)
+
 reviews_countvectorizer = vectorizer.fit_transform(reviews_df['verified_reviews'])
-[ ]
-  1
-  2
+
 print(vectorizer.get_feature_names_out())
 
-account_circle
+
 ['072318' '1' '10' ... '😬' '😳' '🤓']
-[ ]
-  1
+
 print(reviews_countvectorizer.toarray())
 account_circle
 [[0 0 0 ... 0 0 0]
@@ -575,52 +536,40 @@ account_circle
  [0 0 0 ... 0 0 0]
  [0 0 0 ... 0 0 0]
  [0 0 0 ... 0 0 0]]
-[ ]
-  1
+
 reviews_countvectorizer.shape
-account_circle
+
 (3150, 5211)
-[ ]
-  1
+
 reviews_df
-account_circle
+
 
 let's drop the column
 
-[ ]
-  1
-  2
-  3
 reviews_df.drop(['verified_reviews'], axis=1, inplace=True)
 reviews = pd.DataFrame(reviews_countvectorizer.toarray())
 
-[ ]
-  1
-  2
-# Now let's concatenate them together
+
+#$$ Now let's concatenate them together
 reviews_df = pd.concat([reviews_df, reviews], axis=1)
-[ ]
-  1
+
 reviews_df
-account_circle
+
 
 We are foing to drop the target label coloumns
 
-[ ]
-  1
+
 X = reviews_df.drop(['feedback'],axis=1)
-[ ]
-  1
+
 X
 account_circle
 
 [ ]
   1
 y = reviews_df['feedback']
-[ ]
-  1
+
 y
-account_circle
+
 0       1
 1       1
 2       1
@@ -634,70 +583,54 @@ account_circle
 3149    1
 Name: feedback, Length: 3150, dtype: int64
 ## IX) TRAIN A NAIVE BAYES CLASSIFIER MODEL
-[ ]
-  1
+
 X.shape
-account_circle
+
 (3150, 5226)
-[ ]
-  1
+
 y.shape
-account_circle
+
 (3150,)
-[ ]
-  1
+
 X_train=X_train.astype(str)
-[ ]
-  1
-  2
+
 from sklearn.model_selection import train_test_split
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2) #, random_state=5)
-[ ]
-  1
+
 from sklearn.naive_bayes import MultinomialNB
-[ ]
-  1
-  2
+
 NB_classifier = MultinomialNB()
 NB_classifier.fit(X_train,y_train)
-account_circle
 
-[ ]
-  1
+
+
 X_train.shape
-account_circle
+
 (2520, 5226)
-[ ]
-  1
+
 X_test.shape
-account_circle
+
 (630, 5226)
-[ ]
-  1
+
 y_train.shape
-account_circle
+
 (2520,)
-[ ]
-  1
+
 y_test.shape
-account_circle
+
 (630,)
-[ ]
-  1
-  2
-  3
-  4
+
 ANN_classifier = tf.keras.models.Sequential()
 ANN_classifier.add(tf.keras.layers.Dense(units=400, activation='relu', input_shape=(4059, )))
 ANN_classifier.add(tf.keras.layers.Dense(units=400, activation='relu'))
 ANN_classifier.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
-[ ]
-  1
+
 ANN_classifier.summary()
-account_circle
+
 Model: "sequential_2"
 _________________________________________________________________
- Layer (type)                Output Shape              Param #   
+ Layer (type)                Output Shape              Param   
 =================================================================
  dense_6 (Dense)             (None, 400)               1624000   
                                                                  
@@ -706,58 +639,44 @@ _________________________________________________________________
  dense_8 (Dense)             (None, 1)                 401       
                                                                  
 =================================================================
+
 Total params: 1784801 (6.81 MB)
+
 Trainable params: 1784801 (6.81 MB)
+
 Non-trainable params: 0 (0.00 Byte)
 _________________________________________________________________
-[ ]
-  1
-  2
-  3
+
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=101)
-#keeping 80% as training data and 20% as testing data.
-[ ]
-  1
-  2
-  3
+
+### keeping 80% as training data and 20% as testing data.
+
 X.columns = X.columns.astype(str)
 NB_classifier = MultinomialNB()
 NB_classifier.fit(X_train, y_train)
-account_circle
 
 ## X) ASSESS TRAINED MODEL PERFORMANCE
-[ ]
-  1
-  2
 from sklearn.metrics import classification_report, confusion_matrix
 
-[ ]
-  1
-  2
-  3
-  4
 y_predict_train = NB_classifier.predict(X_train)
 y_predict_train
 cm = confusion_matrix(y_train, y_predict_train)
 sns.heatmap(cm, annot=True)
-account_circle
+<p align="center">
+  <img src="A.png">
+</p>
 
-[ ]
-  1
-  2
-  3
-  4
-# Predicting the Test set results
+### Predicting the Test set results
 y_predict_test = NB_classifier.predict(X_test)
 cm = confusion_matrix(y_test, y_predict_test)
 sns.heatmap(cm, annot=True)
-account_circle
+<p align="center">
+  <img src="B.png">
+</p>
 
-[ ]
-  1
 print(classification_report(y_test, y_predict_test))
-account_circle
+
               precision    recall  f1-score   support
 
            0       0.42      0.39      0.41        38
@@ -768,27 +687,21 @@ account_circle
 weighted avg       0.93      0.93      0.93       630
 
 ## XI) ASSIGNMENT - TRAIN AND EVALUATE A LOGISTIC REGRESSION CLASSIFIER
-[ ]
-  1
-  2
+
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-[ ]
-  1
-  2
+
 model = LogisticRegression()
 model.fit(X_train, y_train)
-account_circle
+
 
 [ ]
   1
 y_pred = model.predict(X_test)
-[ ]
-  1
-  2
+
 ### Testing Set Performance
 y_pred
-account_circle
+
 array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -818,28 +731,22 @@ array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1])
-[ ]
-  1
-  2
-  3
+
+
 from sklearn.metrics import confusion_matrix, classification_report
 
 print('Accuracy {} %'.format( 100 * accuracy_score(y_pred, y_test)))
-account_circle
+
 Accuracy 94.12698412698413 %
-[ ]
-  1
-  2
+
 cm = confusion_matrix(y_pred, y_test)
 sns.heatmap(cm, annot = True)
-account_circle
+<p align="center">
+  <img src="C.png">
+</p>
 
-[ ]
-  1
-  2
 print(classification_report(y_test, y_pred))
 
-account_circle
               precision    recall  f1-score   support
 
            0       0.53      0.21      0.30        38
