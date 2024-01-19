@@ -1,7 +1,20 @@
-# NATURAL-LANGUAGE-PROCESSING-NLP-FOR-CUSTOMER-SENTIMENTS
+---
+title: "NATURAL-LANGUAGE-PROCESSING-NLP-FOR-CUSTOMER-SENTIMENTS"
+author: "Dr LEBEDE  Ngartera"
+date: "12--23--2023"
+output:
+  html_document:
+    toc: yes
+    number_sections: yes
+  pdf_document:
+    toc: yes
+---
 <p align="center">
-  <img src="NLP1.png">
+  <img src="NLP1.png"></b><br>
 </p>
+
+# NATURAL-LANGUAGE-PROCESSING-NLP-FOR-CUSTOMER-SENTIMENTS
+
 
 ## I) INTRODUCTION
 In today's digital age, businesses are inundated with vast amounts of customer feedback across various online platforms. Understanding and interpreting this feedback is crucial for maintaining customer satisfaction and making informed business decisions. The NLP (Natural Language Processing) for Customer Sentiment Analysis project aims to leverage advanced language processing techniques to analyze and extract valuable insights from customer sentiments, reviews and predict if customers are happy or not.
